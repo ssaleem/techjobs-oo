@@ -1,10 +1,9 @@
 package org.launchcode.models.data;
 
-import javafx.geometry.Pos;
 import org.launchcode.models.*;
+import org.launchcode.models.forms.JobForm;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by LaunchCode
@@ -84,6 +83,22 @@ public class JobData {
 
     public void add(Job job) {
         jobs.add(job);
+    }
+
+    private Job createJob(JobForm jobForm) {
+        String name = jobForm.getName();
+        Employer employer = employers.findById(jobForm.getEmployerId());
+        Location location = locations.findById(jobForm.getLocationId());
+        PositionType positionType = positionTypes.findById(jobForm.getPositionTypeId());
+        CoreCompetency coreCompetency = coreCompetencies.findById(jobForm.getCoreCompetencyId());
+
+        return new Job(name, employer, location, positionType, coreCompetency);
+    }
+
+    public int addNewJob(JobForm jobForm) {
+        Job job = this.createJob(jobForm);
+        this.add(job);
+        return job.getId();
     }
 
 
